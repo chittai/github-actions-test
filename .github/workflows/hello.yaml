@@ -1,14 +1,33 @@
 name: Hello
 
 on: 
-  workflow_dispatch:
-    inputs:
-      greeting:
-        type: string
-        required: true
+  push:
+    branches:
+      - main
 jobs:
-  run:
+  hello_world_job:
     runs-on: ubuntu-latest
+    name: A job to say hello
     steps:
-      - name: Run
-        run: echo "Hello, ${{ inputs.greeting }}!"
+      - name: Hello world action step
+        id: hello
+        uses: ./actions/test/
+        with:
+          who-to-greet: 'Mona the Octocat'
+      # Use the output from the `hello` step
+      - name: Get the output time
+        run: echo "The time was ${{ steps.hello.outputs.time }}"
+
+
+# on: 
+#   workflow_dispatch:
+#     inputs:
+#       greeting:
+#         type: string
+#         required: true
+# jobs:
+#   run:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Run
+#         run: echo "Hello, ${{ inputs.greeting }}!"
